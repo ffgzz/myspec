@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version info
+        id: version
+        # 调用 get-next-version.sh 逻辑，或者直接解析 tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=v$VERSION" >> $GITHUB_ENV
+
+      - name: Update Version in files
+        run: |
+          chmod +x .github/workflows/scripts/*.sh
+          ./.github/workflows/scripts/update-version.sh "${{ env.VERSION }}"
+
+      - name: Generate Release Notes
+        id: notes
+        # 获取上一个 tag，用于生成 diff
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "v0.0.0")
+          ./.github/workflows/scripts/generate-release-notes.sh "${{ env.VERSION }}" "$LAST_TAG"
+
+      - name: Create Release Packages
+        # 核心：调用刚才修复的 create-release-packages.sh
+        run: |
+          ./.github/workflows/scripts/create-release-packages.sh "${{ env.VERSION }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release_notes.md
+          files: |
+            .genreleases/*.zip
+          draft: false
+          prerelease: false
