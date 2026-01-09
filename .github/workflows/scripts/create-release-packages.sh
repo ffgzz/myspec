@@ -120,7 +120,7 @@ build_variant() {
     find templates -type f -not -path "templates/commands/*" -not -name "vscode-settings.json" -exec cp --parents {} "$SPEC_DIR"/ \;
   fi
 
-  # --- 生成各 AI 助手的配置文件 ---
+  # --- 生成 claude 的配置文件 ---
   case $agent in
     claude)
       # 生成 .claude/commands/*.md

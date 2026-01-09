@@ -1,96 +1,97 @@
 ---
-description: Execute the implementation planning workflow using the plan template to generate design artifacts.
-handoffs: 
-  - label: Create Tasks
-    agent: speckit.tasks
-    prompt: Break the plan into tasks
-    send: true
-  - label: Create Checklist
-    agent: speckit.checklist
-    prompt: Create a checklist for the following domain...
+description: 基于Spec文档和用户指定的技术栈，制定详细的技术实现方案 (Technical Design)。
+handoffs:
+  - label: 生成蓝图契约
+    agent: speckit.blueprint
+    prompt: 生成最终的开发蓝图契约
 scripts:
-  sh: scripts/bash/setup-plan.sh --json
-  ps: scripts/powershell/setup-plan.ps1 -Json
-agent_scripts:
-  sh: scripts/bash/update-agent-context.sh __AGENT__
-  ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
+  sh: scripts/bash/setup-plan.sh
+  ps: scripts/powershell/setup-plan.ps1
 ---
 
 ## User Input
-
 ```text
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
+**Critical**: 用户输入 (`$ARGUMENTS`) 包含了本项目的 **技术栈偏好**（如框架、语言、数据库）。你必须严格基于这些约束来制定方案。
 
-## Outline
+## Preflight Analysis
 
-1. **设置**：从仓库根目录运行 `{SCRIPT}` 脚本，并解析其 JSON 输出以获取 `FEATURE_SPEC`（功能规范）、`IMPL_PLAN`（实施计划）、`SPECS_DIR`（规范目录）、`BRANCH`（分支）等信息。对于参数中的单引号（如 “I‘m Groot”），请使用转义语法，例如 `'I'\''m Groot'`（或尽可能使用双引号：`"I‘m Groot"`）。
-2. **加载上下文**：读取 `FEATURE_SPEC`（功能规范）和 `/memory/constitution.md`（章程）。加载 `IMPL_PLAN` 模板（该模板已复制到相应位置）。
-3. **执行计划工作流**：遵循 `IMPL_PLAN` 模板中的结构，完成以下工作：
-   - 填写“技术上下文”部分（将未知项标记为“需要澄清”）。
-   - 根据章程填写“章程检查”部分。
-   - 评估各个“关卡”（如果发现违反章程且无正当理由，则报错）。
-   - **阶段 0**：生成 `research.md` 文件（解决所有“需要澄清”的问题）。
-   - **阶段 1**：生成 `data-model.md`、`contracts/` 目录下的文件、`quickstart.md`。
-   - **阶段 1**：运行代理脚本，更新代理上下文。
-   - 在设计完成后，重新评估“章程检查”。
-4. **停止并报告**：该命令在完成阶段 2 的计划后结束。报告分支信息、`IMPL_PLAN` 文件路径以及生成的所有产出物。
+在执行生成前，读取当前分支下的 `spec.md` 和用户输入：
 
-## 各阶段详情
+1. **Tech Stack Analysis**: 提取和解析用户输入，确定 Technical Stack 的具体版本和依赖。
+2. **Requirement Mapping**: 识别 `spec.md` 中的 User Stories，规划技术实现方案。
 
-### 阶段 0：大纲与研究
+## Execution Steps
 
-1. **从上面的“技术上下文”中提取未知项**：
+### 1. Initialization
 
-   - 对于每个“需要澄清” → 创建一个研究任务。
-   - 对于每个依赖项 → 创建一个最佳实践研究任务。
-   - 对于每个集成项 → 创建一个模式研究任务。
+执行脚本 `{SCRIPT}`。
 
-2. **生成并派发研究任务**：
+- 该脚本会将 `plan-template.md` 复制为 `plan.md`，并创建空的 `api.md`, `data-model.md`, `quickstart.md`文档。
 
-   text
+### 2. Technical Design Drafting (技术方案起草)
 
-   ```
-   对于技术上下文中的每个未知项：
-     任务：“为 {功能上下文} 研究 {未知项}”
-   对于每项技术选型：
-     任务：“查找 {领域} 中关于 {技术} 的最佳实践”
-   ```
+按顺序填充并写入以下文件：
 
-   
+#### A. Architecture Strategy (`plan.md`)
 
-3. **在 `research.md` 中整合研究发现**，使用以下格式：
+读取并填充 `plan.md` 模板，遵循模板结构：
 
-   - **决策**：[选择了什么]
-   - **理由**：[为什么这样选择]
-   - **考虑的替代方案**：[评估了哪些其他选项]
+- **Executive Summary**: 必须填写 Language/Version, Primary Dependencies, Storage, Testing 等字段。
+- **Architecture Decisions (ADR)**: 记录关键技术决策及理由。
+- **High-Level Architecture**: 使用 Mermaid 绘制组件图。
+- **Implementation Strategy**: 将 Spec 中的 Story 映射为技术实现方案（不要包含具体代码，plan这一步仅为技术方案设计，还未具体到代码实现）。
+- **Security & Scalability**：根据上面设计的技术方案，填写项目需要的安全和可扩展性方面的内容
+- **Project Structure**：根据上面设计的技术方案，决定项目的结构
 
-   **输出**：包含所有“需要澄清”问题解决方案的 `research.md` 文件。
+#### B. Data Model (`data-model.md`)
 
-### 阶段 1：设计与契约
+**没有模板**，请直接按照以下标准格式生成：
 
-**前提条件**：`research.md` 已完成。
+1. **Core Entities**: 定义实体接口 (TypeScript/Python style)。包含 Fields (Name, Type, Description) 和 Validation Rules。
+2. **Data Flow**: 描述数据处理管道（Processing Pipeline），例如：Input Capture -> Processing -> Storage。
+3. **Error Handling**: 定义错误类型 (Error Types) 和恢复机制 (Recovery Mechanisms)。 *参考风格*: 实体定义要像 API Schema 一样严谨，包含字段类型和必填项。
 
-1. **从功能规范中提取实体** → 生成 `data-model.md`：
-   - 实体名称、字段、关系。
-   - 根据需求推导的验证规则。
-   - 如适用，包含状态转换。
-2. **根据功能需求生成 API 契约**：
-   - 每个用户动作 → 对应一个端点。
-   - 使用标准的 REST/GraphQL 模式。
-   - 将 OpenAPI/GraphQL 模式输出到 `/contracts/` 目录。
-3. **更新代理上下文**：
-   - 运行 `{AGENT_SCRIPT}` 脚本。
-   - 这些脚本会检测当前使用的是哪种 AI 代理。
-   - 更新相应的代理特定上下文文件。
-   - 仅添加当前计划中涉及的新技术。
-   - 保留标记之间的手动添加内容。
+#### C. API Contract (`api.md`)
 
-**输出**：`data-model.md`、`/contracts/*` 下的文件、`quickstart.md`、代理特定文件。
+**没有模板**，请基于 RESTful 最佳实践生成：
 
-## 关键规则
+1. **Overview**: Base URL, Authentication 方式。
+2. **Endpoints**: 按资源分组。每个接口必须包含：
+   - **Method & Path**: (e.g., `POST /api/v1/assets`)
+   - **Description**: 关联的 User Story。
+   - **Request Body**: JSON 示例或 Schema。
+   - **Response**: 成功 (200) 和 失败 (4xx/5xx) 的 JSON 示例。
+3. **Error Codes**: 定义通用的错误码列表。
 
-- 使用绝对路径。
-- 当“关卡”检查失败或存在未解决的“需要澄清”问题时，报错。
+#### D. Quickstart Guide (`quickstart.md`)
+
+**没有模板**，请直接按照以下标准格式生成：
+
+1. **Overview**: 一句话描述该功能。
+2. **Prerequisites**: 需要安装的工具 (Node/Docker/Python)。
+3. **Setup Instructions**:
+   - Install Dependencies (e.g., `npm install`)
+   - Environment Config (e.g., `.env` 示例)
+   - Start Server (e.g., `npm run dev`)
+4. **Usage Guide**: 简述如何手动测试核心功能（配合 Spec 中的 Happy Path）。
+
+###  3. Constitution Check（宪法）
+
+起草完成后执行**宪法检查**，检查当前技术方案与`context/constitution.md`宪法中的所有规定是否存在冲突，若有冲突修改上述文档中的对应部分，重新运行宪法检查，直到所有项都通过再进行下一步（最多迭代 3 次，若三次后还失败则停止当前命令执行并报告用户仍存在冲突的点）。
+
+## Quality Checks
+
+在完成前自查，如有问题更新文档以解决问题：
+
+- [ ] `plan.md` 中的技术栈是否与用户输入一致？
+- [ ] `plan.md` 中是否不包含具体代码？
+- [ ] `api.md` 是否覆盖了 `spec.md` 中所有的交互需求？
+- [ ] `data-model.md` 中的实体是否与 Domain Dictionary (Spec) 一致？
+- [ ] `quickstart.md` 中的命令是否在该技术栈下真实有效？
+
+## Output
+
+汇报生成的文件路径及架构摘要。
