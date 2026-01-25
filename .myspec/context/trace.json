@@ -1,0 +1,86 @@
+{
+  "query": "资产借用审批流程：经理审批->资产管理员审批->通过后修改资产状态",
+  "topk": 8,
+  "hits": [
+    {
+      "evidence": "E1",
+      "fused_score": 0.030776515151515152,
+      "vec_rank": 4,
+      "bm25_rank": 6,
+      "chunk_id": "aec2e4aad077",
+      "heading": "核心验证逻辑（伪代码） > 常见边缘案例 > 6. 临时借用",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E2",
+      "fused_score": 0.0304147465437788,
+      "vec_rank": 10,
+      "bm25_rank": 2,
+      "chunk_id": "d0739f5408e4",
+      "heading": "企业资产管理系统 - 核心领域知识 > 资产生命周期状态 > 四种核心状态 > 4. 已报废（Retired）",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E3",
+      "fused_score": 0.03009207275993712,
+      "vec_rank": 13,
+      "bm25_rank": 1,
+      "chunk_id": "5fcff90e1bb8",
+      "heading": "核心验证逻辑（伪代码） > 关键业务规则 > 规则 4：员工离职强制归还（强制）",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E4",
+      "fused_score": 0.029418126757516764,
+      "vec_rank": 9,
+      "bm25_rank": 7,
+      "chunk_id": "987ae8571207",
+      "heading": "企业资产管理系统 - 核心领域知识 > 核心概念 > 2. 员工（Employee）",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E5",
+      "fused_score": 0.029411764705882353,
+      "vec_rank": 8,
+      "bm25_rank": 8,
+      "chunk_id": "179557af8c6f",
+      "heading": "核心验证逻辑（伪代码） > 典型业务场景 > 场景 2：设备故障报修",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E6",
+      "fused_score": 0.02938045560996381,
+      "vec_rank": 1,
+      "bm25_rank": 17,
+      "chunk_id": "3f5635889ab5",
+      "heading": "核心验证逻辑（伪代码） > 常见边缘案例 > 5. 跨部门调动",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E7",
+      "fused_score": 0.02900988017658188,
+      "vec_rank": 7,
+      "bm25_rank": 11,
+      "chunk_id": "003189282b12",
+      "heading": "核心验证逻辑（伪代码）",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    },
+    {
+      "evidence": "E8",
+      "fused_score": 0.028629032258064516,
+      "vec_rank": 2,
+      "bm25_rank": 20,
+      "chunk_id": "3a307e5f54a6",
+      "heading": "核心验证逻辑（伪代码） > 常见边缘案例 > 3. 资产丢失",
+      "namespace": "default",
+      "source_path": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw/domain-knowledge.md"
+    }
+  ]
+}

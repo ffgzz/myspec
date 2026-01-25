@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # create-release-packages.sh
-# 为 my-spec-cli 项目构建发布包
+# 为项目构建发布包
 
 if [[ $# -ne 1 ]]; then
   echo "Usage: $0 <version-with-v-prefix>" >&2
@@ -24,7 +24,7 @@ rm -rf "$GENRELEASES_DIR"/* || true
 
 # 构建发布包
 build_package() {
-  local base_dir="$GENRELEASES_DIR/my-spec-cli-${NEW_VERSION}"
+  local base_dir="$GENRELEASES_DIR/my-spec-claude-${NEW_VERSION}"
   echo "Building package in $base_dir..."
   mkdir -p "$base_dir"
 

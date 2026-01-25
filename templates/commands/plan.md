@@ -6,7 +6,18 @@ handoffs:
     prompt: 生成最终的开发蓝图契约
 ---
 
+## 执行代理要求（强制）
+
+本命令**必须由子代理 `architect_agent` 执行**，主线程不得直接编写技术方案。
+
+执行规则：
+1. 立即将本命令的全部工作委派给 `architect_agent`
+2. 必须以 spec.md 为唯一需求来源，不得发明需求
+3. 主线程只负责输出 plan.md / api.md / data-model.md / quickstart.md 的生成结果与路径
+4. 若未成功委派，则必须停止并改为委派后再继续
+
 ## User Input
+
 ```text
 $ARGUMENTS
 ```

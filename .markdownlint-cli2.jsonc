@@ -1,0 +1,45 @@
+{
+  // Markdownlint 规则配置
+  // 规则文档: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+  "config": {
+    // 启用所有默认规则
+    "default": true,
+
+    // MD003: 标题风格 - 使用 ATX 风格 (# 开头)
+    "MD003": {
+      "style": "atx",
+    },
+
+    // MD007: 无序列表缩进 - 使用 2 空格
+    "MD007": {
+      "indent": 2,
+    },
+
+    // MD013: 行长度限制 - 禁用（中文文档行长度难以控制）
+    "MD013": false,
+
+    // MD024: 重复标题 - 仅检查同级标题
+    "MD024": {
+      "siblings_only": true,
+    },
+
+    // MD033: 内联 HTML - 禁用（允许使用 HTML 标签）
+    "MD033": false,
+
+    // MD041: 首行必须是一级标题 - 禁用（模板文件可能有 frontmatter）
+    "MD041": false,
+
+    // MD049: 强调风格 - 使用星号 *
+    "MD049": {
+      "style": "asterisk",
+    },
+
+    // MD050: 加粗风格 - 使用星号 **
+    "MD050": {
+      "style": "asterisk",
+    },
+  },
+
+  // 忽略的文件/目录
+  "ignores": ["node_modules/", ".venv/", "spec-kit/"],
+}

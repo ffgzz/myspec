@@ -1,0 +1,5 @@
+{
+  "model": "intfloat/multilingual-e5-small",
+  "num_chunks": 47,
+  "kb_raw": "D:/文件/spec实验/my-spec-cli/.myspec/kb/raw"
+}

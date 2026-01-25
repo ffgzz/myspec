@@ -9,6 +9,11 @@ dependencies = [
     "httpx>=0.25.0",        # 网络请求 (比requests更现代化)
     "readchar>=4.0.0",      # 键盘输入处理
     "truststore>=0.8.0",    # 系统SSL证书支持
+    "sentence-transformers>=3.0.0",
+    "faiss-cpu>=1.8.0",
+    "numpy>=2.0.0",
+    "rank-bm25>=0.2.2",
+    "jieba>=0.42.1"
 ]
 
 [project.scripts]

@@ -6,7 +6,18 @@ handoffs:
     prompt: 读取 tasks.md，按顺序或并行执行编码任务
 ---
 
+## 执行代理要求（强制）
+
+本命令**必须由子代理 `tasks_agent` 执行**，主线程不得直接拆分任务清单。
+
+执行规则：
+1. 立即将本命令的全部工作委派给 `tasks_agent`
+2. tasks.md 的每个任务必须包含：files/steps/verification/done criteria，并标注依赖与并行性
+3. 主线程只负责输出 tasks.md 路径、任务总数、P1 闭环任务集合
+4. 若未成功委派，则必须停止并改为委派后再继续
+
 ## User Input
+
 ```text
 $ARGUMENTS
 ```

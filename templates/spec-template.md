@@ -13,7 +13,23 @@
 | [例如: 购物车]              | `UserCart`           | [用户暂存商品的容器，Session 级生命周期] |
 | [例如: 结算]                | `checkout()`         | [将 Cart 转换为 Order 的动作]            |
 
+
+
+## 1.5 领域证据摘要（来自知识库）
+
+> 说明：本章节必须先写，再写用户故事与需求。每条要点必须引用知识库证据 [E1]~[EN]。
+
+- [要点 1：领域规则/流程/约束] [E1]
+- [要点 2：领域规则/流程/约束] [E2]
+- [要点 3：领域规则/流程/约束] [E3]
+
+> 如果知识库未检索到证据，请写：
+> “知识库未检索到相关证据，本规范仅基于用户输入生成。”
+
+
+
 ## 2. User Stories & Acceptance Scenarios (Test Contracts)
+
 <!-- 
 
 每个用户故事都必须是可独立测试的 —— 这意味着如果只实现其中一个，你仍应拥有一个能提供价值的可行 MVP（最小可行产品）。为每个故事分配优先级（P1、P2、P3 等），其中P1为最关键的。
@@ -35,6 +51,8 @@
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
+**Domain Evidence (领域证据引用)**: [本故事涉及的关键领域规则引用，例如：审批链、状态流转、权限边界]（至少 1 条）[E1]
+
 #### Scenario 1.1: [Scenario Name]
 > **Test Type**: `[Unit/Integration/E2E]`
 > **Tags**: `@core`, `@happy-path`
@@ -54,6 +72,8 @@
 **So that** [Value]
 
 **Why this priority**: [Explain the value and why it has this priority level]
+
+**Domain Evidence (领域证据引用)**: [本故事涉及的关键领域规则引用，例如：审批链、状态流转、权限边界]（至少 1 条）[E1]
 
 #### Scenario 2.1: [Scenario Name]
 
@@ -76,6 +96,8 @@
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
+**Domain Evidence (领域证据引用)**: [本故事涉及的关键领域规则引用，例如：审批链、状态流转、权限边界]（至少 1 条）[E1]
+
 #### Scenario 1.1: [Scenario Name]
 
 > **Test Type**: `[Unit/Integration/E2E]`
@@ -94,6 +116,8 @@
 ### Edge Cases
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+- 若该边界情况属于“领域规则”（例如状态不可逆、审批失败回退、权限限制），必须引用证据 [E1]~[EN]
+- 若无证据支持但需要补全，请标注为：假设（不在证据中）+ 风险说明
 
 ​	[Adjust the quantity as needed]
 
@@ -132,3 +156,17 @@
 * **SC-003**: [Business metric, e.g., "Reduce support tickets by 50%"]
 
 ​	[Adjust the quantity as needed]
+
+## 7. 证据溯源（Evidence Trace）
+> 列出本规范中实际使用的知识库证据，确保可追溯。
+
+- [E1] <证据标题路径> — <source path>
+- [E2] <证据标题路径> — <source path>
+- ...
+
+## 8. 假设（不在证据中）
+> 仅当确实存在“证据之外推断”时才填写，并说明风险。
+
+- 假设：......
+  - 风险：......
+  - 影响：......
